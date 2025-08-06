@@ -1,25 +1,45 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function add(a, b) {
-    return a + b;
+    let numA = Number(a);
+    let numB = Number(b);
+    if (isNaN(numA) || isNaN(numB)) {
+        return "Khong hop le";
+    }
+    return numA + numB;
 }
 function subtract(a, b) {
-    return a - b;
+    let numA = Number(a);
+    let numB = Number(b);
+    if (isNaN(numA) || isNaN(numB)) {
+        return "Khong hop le";
+    }
+    return numA - numB;
 }
 function multiply(a, b) {
-    return a * b;
+    let numA = Number(a);
+    let numB = Number(b);
+    if (isNaN(numA) || isNaN(numB)) {
+        return "Khong hop le";
+    }
+    return numA * numB;
 }
 function divide(a, b) {
-    if (b === 0) {
+    let numA = Number(a);
+    let numB = Number(b);
+    if (isNaN(numA) || isNaN(numB)) {
+        return "Khong hop le";
+    }
+    if (numB === 0) {
         return "khong the chia cho 0";
     }
-    return a / b;
+    return numA / numB;
 }
-function power(coSo, soMu) {
-    return Math.pow(coSo, soMu);
+function power(base, exponent) {
+    return Math.pow(base, exponent);
 }
-function sqrt(coSo, bacCan) {
-    return Math.pow(coSo, 1 / bacCan);
+function sqrt(base, root) {
+    return Math.pow(base, 1 / root);
 }
 function factorial(n) {
     if (n < 0 || !Number.isInteger(n)) {

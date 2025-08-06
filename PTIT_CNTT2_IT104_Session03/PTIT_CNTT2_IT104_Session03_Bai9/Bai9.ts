@@ -1,25 +1,48 @@
-function add(a:number, b:number): number {
-    return a+b;
+function add(a:number | string, b:number | string): number | string{
+    let numA=Number(a);
+    let numB=Number(b);
+    if(isNaN(numA)||isNaN(numB)){
+        return "Khong hop le"
+    }
+    return numA+numB;
 }
-function subtract(a: number, b: number): number{
-    return a-b;
+
+function subtract(a:number | string, b:number | string): number | string{
+    let numA=Number(a);
+    let numB=Number(b);
+    if(isNaN(numA)||isNaN(numB)){
+        return "Khong hop le"
+    }
+    return numA-numB;
 }
-function multiply(a: number, b:number): number{
-    return a*b
+
+function multiply(a:number | string, b:number | string): number | string{
+    let numA=Number(a);
+    let numB=Number(b);
+    if(isNaN(numA)||isNaN(numB)){
+        return "Khong hop le"
+    }
+    return numA*numB;
 }
-function divide(a: number, b:number): number|string{
-    if(b===0){
+
+function divide(a:number | string, b:number | string): number | string{
+    let numA=Number(a);
+    let numB=Number(b);
+    if(isNaN(numA)||isNaN(numB)){
+        return "Khong hop le"
+    }
+    if(numB===0){
         return "khong the chia cho 0"
     }
-    return a/b
+    return numA/numB;
 }
 
-function power(coSo:number, soMu:number):number{
-    return Math.pow(coSo, soMu);
+function power(base:number, exponent:number):number{
+    return Math.pow(base, exponent);
 }
 
-function sqrt(coSo:number, bacCan:number):number{
-    return Math.pow(coSo, 1/bacCan);
+function sqrt(base:number, root:number):number{
+    return Math.pow(base, 1/root);
 }
 
 function factorial(n:number):number|string{
