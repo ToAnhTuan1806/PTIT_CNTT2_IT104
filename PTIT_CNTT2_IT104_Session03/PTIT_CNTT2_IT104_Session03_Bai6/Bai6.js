@@ -16,4 +16,3 @@ console.log("Chia: ", num3);
 let result = num4 + num5;
 console.log("num4+num5= ", result);
 //khi cộng một chuỗi với một giá trị boolean JavaScript/TypeScript sẽ ép kiểu boolean thành chuỗi
-//# sourceMappingURL=Bai6.js.map

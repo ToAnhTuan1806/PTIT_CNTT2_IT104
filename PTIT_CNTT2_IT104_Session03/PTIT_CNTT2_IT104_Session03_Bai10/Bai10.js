@@ -22,4 +22,3 @@ function findLongestWord(sentence) {
 }
 let input = "hello world apple banana orange pumpkin cucumber";
 console.log(findLongestWord(input));
-//# sourceMappingURL=Bai10.js.map

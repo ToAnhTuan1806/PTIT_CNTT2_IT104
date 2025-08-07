@@ -3,7 +3,7 @@ let removeDupString=(str:string):string=>{
 
     for(let i=0; i<str.length; i++){
         let char=str[i]
-        if (!result.includes(char)) {
+        if (char && !result.includes(char)) {
             result += char;
         }
     }

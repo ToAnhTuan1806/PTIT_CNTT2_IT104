@@ -9,4 +9,3 @@ function showInfo(username, age, job) {
     console.log(job);
 }
 showInfo(username, age, job);
-//# sourceMappingURL=Bai1.js.map

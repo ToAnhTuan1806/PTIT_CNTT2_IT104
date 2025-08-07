@@ -39,4 +39,3 @@ console.log(add(6, "12"));
 console.log(subtract("30", 6));
 console.log(multiply("6", "4"));
 console.log(divide("6", 6));
-//# sourceMappingURL=Bai8.js.map

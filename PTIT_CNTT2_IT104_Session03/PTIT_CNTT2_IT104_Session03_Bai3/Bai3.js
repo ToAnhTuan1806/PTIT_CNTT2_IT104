@@ -7,4 +7,3 @@ if (isGreeting) {
 else {
     console.log("Tam biet");
 }
-//# sourceMappingURL=Bai3.js.map

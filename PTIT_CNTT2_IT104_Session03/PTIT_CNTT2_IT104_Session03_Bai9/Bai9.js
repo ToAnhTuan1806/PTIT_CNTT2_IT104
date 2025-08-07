@@ -89,4 +89,3 @@ function phepTinh(operator) {
     }
     resultDisplay.textContent = "Kết quả: " + result;
 }
-//# sourceMappingURL=Bai9.js.map

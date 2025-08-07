@@ -12,4 +12,3 @@ firtsName = capitalize(firtsName);
 lastName = capitalize(lastName);
 let fullName = firtsName + " " + lastName;
 console.log(fullName);
-//# sourceMappingURL=Bai5.js.map
