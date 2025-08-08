@@ -74,12 +74,33 @@ function rank(student) {
         return "Yếu";
     }
 }
-function showStudent(student) {
-    console.log("Danh sach sinh vien");
+function showStudent() {
+    console.log("===== Danh sách sinh viên =====");
     students.forEach(student => {
         let avgScore = avg(student);
         let studentRank = rank(student);
-        console.log(`Ten: ${student.name}, Tuoi: ${student.age}, DTB: ${avgScore}, Xep loai: ${rank}`);
+        console.log(`Tên: ${student.name}, Tuổi: ${student.age}, ĐTB: ${avgScore.toFixed(2)}, Xếp loại: ${studentRank}`);
     });
 }
 // B3: Goi ham, kiem tra
+addStudent({
+    name: "An",
+    age: 20,
+    subjects: [
+        { SubjectName: "Toán", score: 9 },
+        { SubjectName: "Lý", score: "B" },
+        { SubjectName: "Hoá", score: "A" }
+    ]
+});
+addStudent({
+    name: "Bình",
+    age: 21,
+    subjects: [
+        { SubjectName: "Toán", score: "C" },
+        { SubjectName: "Lý", score: "D" },
+        { SubjectName: "Hoá", score: "B" }
+    ]
+});
+updateStudent("Bình", "Bình Nguyễn", 22);
+deleteStudent("Không có tên này");
+showStudent();
