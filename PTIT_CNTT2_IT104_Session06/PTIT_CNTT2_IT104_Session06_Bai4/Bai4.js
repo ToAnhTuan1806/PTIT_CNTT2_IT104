@@ -23,7 +23,7 @@ class Rectangle {
         return this.width * this.height;
     }
     calculatePerimeter() {
-        return 2 * (this.width * this.height);
+        return 2 * (this.width + this.height);
     }
 }
 let circle = new Circle(5);

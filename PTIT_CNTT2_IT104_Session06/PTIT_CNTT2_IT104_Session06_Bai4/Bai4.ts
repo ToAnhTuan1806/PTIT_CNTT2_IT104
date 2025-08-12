@@ -29,7 +29,7 @@ class Rectangle implements Geometry{
         return this.width*this.height
     }
     calculatePerimeter(): number {
-        return 2*(this.width*this.height)
+        return 2*(this.width+this.height)
     }
 }
 
