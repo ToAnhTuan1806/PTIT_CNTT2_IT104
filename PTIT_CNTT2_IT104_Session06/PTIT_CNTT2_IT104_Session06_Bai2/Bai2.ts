@@ -12,8 +12,8 @@ abstract class Job{
 
 class PattimeJob extends Job{
     private workingHour:number
-    constructor(workingHour:number){
-        super("Part-time")
+    constructor(type:string ,workingHour:number){
+        super(type)
         this.workingHour=workingHour
     }
     calculateSalary(): number {
@@ -22,8 +22,8 @@ class PattimeJob extends Job{
 }
 
 class FulltimeJob extends Job{
-    constructor(){
-        super("Ful-time")
+    constructor(type:string){
+        super(type)
     
     }
     calculateSalary(): number {
@@ -31,8 +31,8 @@ class FulltimeJob extends Job{
     }
 }
 
-let parttime= new PattimeJob(50)
-let fulltime= new FulltimeJob
+let parttime= new PattimeJob("Part-time",50)
+let fulltime= new FulltimeJob("Full-time")
 parttime.printType()
 console.log(`Luong: ${parttime.calculateSalary()} VND`);
 fulltime.printType()
