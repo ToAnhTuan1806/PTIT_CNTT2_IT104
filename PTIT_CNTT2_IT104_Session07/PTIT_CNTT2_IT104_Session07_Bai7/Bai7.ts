@@ -70,26 +70,6 @@ class SavingAccount extends Account{
     }
 }
 
-class CheckingAccount extends Account{
-    overdraftLimit:number
-    constructor(accountNumber: string, balance: number, status: string, overdraftLimit: number){
-        super(accountNumber, balance, status)
-        this.overdraftLimit=overdraftLimit
-    }
-
-    withdraw(amount: number): void {
-        if(amount<=0){
-            console.log("So tien rut phai lon hon 0");
-            return
-        }
-        if(amount>this.balance+this.overdraftLimit){
-            console.log(`Khong the rut qua han muc. Gioi han: ${this.overdraftLimit}`);
-            return;
-        }
-        this.balance-=amount
-        this.history.push(`Rut ${amount} tu TK thanh toan. So du: ${this.balance}`)
-    }
-}
 
 let saving1 = new SavingAccount("TK001", 5000, "active", 0.05);
 
@@ -97,9 +77,3 @@ saving1.deposit(2000);
 saving1.withdraw(3000);  
 saving1.withdraw(6000); 
 saving1.showHistory();
-
-let checking1 = new CheckingAccount("TK002", 2000, "active", 1000);
-checking1.deposit(500);
-checking1.withdraw(2500); 
-checking1.withdraw(2000);
-checking1.showHistory();
