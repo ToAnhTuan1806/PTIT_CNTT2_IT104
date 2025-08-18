@@ -2,10 +2,13 @@ class LibraryItem {
     static autoId = 1;
     id;
     title;
-    isAvailableFlag = true;
+    isAvailable = true;
     constructor(title) {
         this.id = LibraryItem.autoId++;
         this.title = title;
+    }
+    getId() {
+        return this.id;
     }
     getTitle() {
         return this.title;
@@ -13,14 +16,17 @@ class LibraryItem {
     setTitle(newTitle) {
         this.title = newTitle;
     }
-    isAvailable() {
-        return this.isAvailableFlag;
-    }
     borrowItem() {
-        this.isAvailableFlag = false;
+        this.isAvailable = false;
     }
     returnItem() {
-        this.isAvailableFlag = true;
+        this.isAvailable = true;
+    }
+    getAvailability() {
+        return this.isAvailable;
+    }
+    getDetails() {
+        return `#${this.id} | ${this.title} | Loại: ${this.getItemType()} | Trạng thái: ${this.isAvailable ? "Có sẵn" : "Đang mượn"}`;
     }
 }
 class Book extends LibraryItem {
@@ -38,8 +44,8 @@ class Book extends LibraryItem {
     getItemType() {
         return "Sách";
     }
-    toString() {
-        return `[Book] ${this.getTitle()} - Tác giả: ${this.author} (ID: ${this.id})`;
+    getDetails() {
+        return super.getDetails() + ` | Tác giả: ${this.author}`;
     }
 }
 class Magazine extends LibraryItem {
@@ -57,51 +63,65 @@ class Magazine extends LibraryItem {
     getItemType() {
         return "Tạp chí";
     }
-    toString() {
-        return `[Magazine] ${this.getTitle()} - Kỳ số: ${this.issueNumber} (ID: ${this.id})`;
+    getDetails() {
+        return super.getDetails() + ` | Kỳ: ${this.issueNumber}`;
     }
 }
 class Member {
-    name;
-    contact;
     static autoId = 1;
     memberId;
+    name;
+    contact;
     borrowedItems = [];
     constructor(name, contact) {
+        this.memberId = Member.autoId++;
         this.name = name;
         this.contact = contact;
-        this.memberId = Member.autoId++;
-    }
-    getDetails() {
-        return `MemberID: ${this.memberId}, Name: ${this.name}, Contact: ${this.contact}`;
     }
     addBorrowedItem(item) {
         this.borrowedItems.push(item);
     }
-    removeBorrowedItem(item) {
-        this.borrowedItems = this.borrowedItems.filter((i) => i.id !== item.id);
+    removeBorrowedItem(itemId) {
+        this.borrowedItems = this.borrowedItems.filter((it) => it.getId() !== itemId);
     }
     getBorrowedItems() {
         return this.borrowedItems;
     }
+    getDetails() {
+        return `Member #${this.memberId} | Tên: ${this.name} | Liên hệ: ${this.contact}`;
+    }
 }
 class Loan {
+    static autoId = 1;
+    loanId;
     member;
     item;
     dueDate;
-    static autoId = 1;
-    loanId;
     isReturned = false;
-    lateFeePaid = 0;
-    constructor(member, item, dueDate) {
+    constructor(member, item) {
+        this.loanId = Loan.autoId++;
         this.member = member;
         this.item = item;
-        this.dueDate = dueDate;
-        this.loanId = Loan.autoId++;
+        let now = new Date();
+        this.dueDate = new Date(now.getTime() + item.getLoanPeriod() * 24 * 60 * 60 * 1000);
+    }
+    getItem() {
+        return this.item;
+    }
+    getMember() {
+        return this.member;
+    }
+    getDueDate() {
+        return this.dueDate;
+    }
+    markReturned() {
+        this.isReturned = true;
+    }
+    isReturnedStatus() {
+        return this.isReturned;
     }
     getDetails() {
-        return (`LoanID: ${this.loanId}, Member: ${this.member.name} (#${this.member.memberId}), ` +
-            `Item: ${this.item.getTitle()} (#${this.item.id}), Due: ${this.dueDate.toDateString()}, Returned: ${this.isReturned}`);
+        return `Loan #${this.loanId} , Thành viên: ${this.member.getDetails()} , Tài liệu: ${this.item.getDetails()} ,Hạn trả: ${this.dueDate.toDateString()} ,Đã trả: ${this.isReturned}`;
     }
 }
 class Library {
@@ -110,33 +130,50 @@ class Library {
     loans = [];
     addItem(item) {
         this.items.push(item);
-        console.log("Them tai lieu thanh cong");
+        console.log("Thêm tài liệu thành công");
     }
     addMember(name, contact) {
         let mb = new Member(name, contact);
         this.members.push(mb);
         return mb;
     }
-    findEntityById(collection, id) {
-        return collection.find((obj) => obj?.id === id || obj?.memberId === id || obj?.loanId === id);
+    borrowItem(memberId, itemId) {
+        let member = this.members.find((m) => m.memberId === memberId);
+        let item = this.items.find((i) => i.getId() === itemId);
+        if (member && item && item.getAvailability()) {
+            item.borrowItem();
+            member.addBorrowedItem(item);
+            let loan = new Loan(member, item);
+            this.loans.push(loan);
+            return loan;
+        }
+        return null;
+    }
+    returnItem(itemId) {
+        let loan = this.loans.find((l) => l.getItem().getId() === itemId && !l.isReturnedStatus());
+        if (!loan) {
+            return 0;
+        }
+        let item = loan.getItem();
+        let member = loan.getMember();
+        item.returnItem();
+        member.removeBorrowedItem(itemId);
+        loan.markReturned();
+        let now = new Date();
+        let overdueDays = Math.max(0, Math.floor((now.getTime() - loan.getDueDate().getTime()) / (1000 * 3600 * 24)));
+        let fee = item.calculateLateFee(overdueDays);
+        return fee;
     }
     listAvailableItems() {
-        this.items
-            .filter((it) => it.isAvailable())
-            .forEach((it) => console.log(it.toString()));
+        this.items.filter((i) => i.getAvailability()).forEach((i) => console.log(i.getDetails()));
     }
     listMemberLoans(memberId) {
-        const member = this.findEntityById(this.members, memberId);
-        if (!member) {
-            console.log("Không tìm thấy thành viên.");
+        let loansOfMember = this.loans.filter((l) => l.getMember().memberId === memberId && !l.isReturnedStatus());
+        if (loansOfMember.length === 0) {
+            console.log("Thành viên chưa mượn tài liệu nào hoặc không tồn tại.");
             return;
         }
-        const activeLoans = this.loans.filter((l) => l.member.memberId === memberId && !l.isReturned);
-        if (activeLoans.length === 0) {
-            console.log("Không có tài liệu đang mượn.");
-            return;
-        }
-        activeLoans.forEach((l) => console.log(l.getDetails()));
+        loansOfMember.forEach((loan) => console.log(loan.getItem().getDetails()));
     }
 }
 function startMenu() {
@@ -146,10 +183,10 @@ function startMenu() {
         choice =
             prompt("===== MENU =====\n" +
                 "1. Thêm thành viên mới\n" +
-                "2. Thêm tài liệu mới \n" +
+                "2. Thêm tài liệu mới\n" +
                 "3. Mượn tài liệu\n" +
-                "4. Trả tài liệu \n" +
-                "5. Hiển thị danh sách tài liệu có sẵn \n" +
+                "4. Trả tài liệu\n" +
+                "5. Hiển thị danh sách tài liệu có sẵn\n" +
                 "6. Hiển thị danh sách tài liệu đang mượn của một thành viên\n" +
                 "7. Tính và hiển thị tổng phí phạt đã thu\n" +
                 "8. Thống kê số lượng từng loại tài liệu\n" +
@@ -159,39 +196,88 @@ function startMenu() {
                 "===============\n" +
                 "Nhập lựa chọn: ") || "11";
         switch (choice) {
-            case "1":
-                let name = prompt("Nhap ten thanh vien:");
-                let contact = "Nhap thong tin lien he (email hoac sdt) : ";
+            case "1": {
+                let name = prompt("Nhập tên thành viên:");
+                let contact = prompt("Nhập thông tin liên hệ (email hoặc sdt): ");
                 if (name && contact) {
                     library.addMember(name, contact);
-                    alert("them thanh cong");
+                    alert("Thêm thành công");
                 }
                 else {
-                    alert("them that bai");
+                    alert("Thêm thất bại");
                 }
                 break;
-            case "2":
+            }
+            case "2": {
                 let type = prompt("Loại (1.Sách / 2.Tạp chí): ");
                 let title = prompt("Tiêu đề: ");
-                if (type === "1") {
-                    let author = prompt("Tác giả: ");
-                    library.addItem(new Book(title, author));
-                }
-                else {
-                    let issue = parseInt(prompt("Số kỳ: "));
-                    library.addItem(new Magazine(title, issue));
+                if (!title) {
+                    alert("Tiêu đề không được để trống.");
                     break;
                 }
-            case "5":
+                if (type === "1") {
+                    let author = prompt("Tác giả: ");
+                    if (!author) {
+                        alert("Tác giả không được để trống.");
+                        break;
+                    }
+                    library.addItem(new Book(title, author));
+                    alert("Thêm sách thành công.");
+                }
+                else if (type === "2") {
+                    let issue = parseInt(prompt("Số kỳ: ") || "0");
+                    if (issue <= 0) {
+                        alert("Số kỳ không hợp lệ.");
+                        break;
+                    }
+                    library.addItem(new Magazine(title, issue));
+                    alert("Thêm tạp chí thành công.");
+                }
+                else {
+                    alert("Loại không hợp lệ.");
+                }
+                break;
+            }
+            case "3": {
+                let memberId = parseInt(prompt("Nhập ID thành viên: ") || "0");
+                let itemId = parseInt(prompt("Nhập ID tài liệu: ") || "0");
+                let loan = library.borrowItem(memberId, itemId);
+                if (loan) {
+                    alert("Mượn thành công! Hạn trả: " + loan.getDueDate().toDateString());
+                }
+                else {
+                    alert("Mượn thất bại (không tìm thấy hoặc tài liệu không sẵn có).");
+                }
+                break;
+            }
+            case "4": {
+                let itemId = parseInt(prompt("Nhập ID tài liệu cần trả: ") || "0");
+                let fee = library.returnItem(itemId);
+                if (fee >= 0) {
+                    alert("Trả thành công. Phí phạt: " + fee + " VND");
+                }
+                else {
+                    alert("Trả thất bại. Không tìm thấy giao dịch mượn.");
+                }
+                break;
+            }
+            case "5": {
                 library.listAvailableItems();
                 break;
-            case "6":
-                library.listMemberLoans();
+            }
+            case "6": {
+                let memberId = parseInt(prompt("Nhập ID thành viên: ") || "0");
+                library.listMemberLoans(memberId);
                 break;
+            }
             case "11":
-                console.log("Thoat chuong trinh thanh cong");
+                console.log("Thoát chương trình thành công");
+                break;
+            default:
+                alert("Lựa chọn không hợp lệ.");
                 break;
         }
     } while (choice !== "11");
 }
+startMenu();
 export {};
