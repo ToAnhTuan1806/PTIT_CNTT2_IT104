@@ -7,8 +7,6 @@ import FormatName from './components/FormatName'
 import AdminIndex from './components/Adminlndex'
 import UserLayout from './components/UserLayout'
 import UserTable from './components/UserTable'
-import TodoListIndex from './components/Bai9/TodoListIndex'
-import ListStudent from './components/Bai10/ListStudent'
 
 
 function App() {
@@ -34,9 +32,6 @@ function App() {
 
       <UserTable/>
 
-    <TodoListIndex/>
-
-    <ListStudent/>
 
     </div>
     </>
