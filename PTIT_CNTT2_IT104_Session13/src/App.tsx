@@ -58,8 +58,12 @@ export default class App extends Component<object, State> {
         <p><b>Nền: {theme}</b></p>
         <p><b>Ngôn ngữ: {language}</b></p>
 
-        {theme === "Sáng" && language === "Tiếng Anh"}
-        {theme === "Tối" && language === "Tiếng Việt"}
+        {theme === "Sáng" && language === "Tiếng Anh" && (
+          <p>Theme đang là <b>Sáng</b> và Ngôn ngữ đang là <b>Tiếng Anh</b></p>
+        )}
+        {theme === "Tối" && language === "Tiếng Việt" && (
+          <p>Theme đang là <b>Tối</b> và Ngôn ngữ đang là <b>Tiếng Việt</b></p>
+        )}
 
         <button
           onClick={() =>this.setState({ theme: theme === "Sáng" ? "Tối" : "Sáng" })}>
