@@ -46,7 +46,11 @@ export default function Shop() {
 
       {isCartOpen && (
         <div className="cart-popup">
-          <Cart cart={cart} />
+          <Cart cart={cart} 
+          updateQuantity={() => {}} removeItem={() => {}} 
+          />
+
+          
         </div>
       )}
     </div>
