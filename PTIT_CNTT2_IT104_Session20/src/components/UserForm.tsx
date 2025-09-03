@@ -39,13 +39,15 @@ export default function UserForm() {
     <div style={{maxWidth: "400px",boxShadow: "0 2px 6px rgba(0,0,0,0.1)", borderRadius: "8px", padding: "20px" }}>
         <h2 style={{textAlign: 'center', fontWeight: ""}}>User Information Form</h2>
         <form>
-            <div>
+            <div style={{ marginBottom: "15px" }}>
                 <label>Tên:</label><br />
-                <input type="text" name="name" placeholder='Nhập tên...' value={state.name} onChange={handleChange}/>
+                <input type="text" name="name" placeholder='Nhập tên...' value={state.name} onChange={handleChange}
+                 style={{ width: "95%", padding: "8px", border: "1px solid #ccc", borderRadius: "4px"}}/>
             </div>
-            <div>
+            <div style={{ marginBottom: "15px" }}>
                 <label>Email:</label><br />
-                <input type="text" name='email' placeholder='Nhập email...' value={state.email} onChange={handleChange}/>
+                <input type="text" name='email' placeholder='Nhập email...' value={state.email} onChange={handleChange}
+                 style={{ width: "95%", padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }}/>
             </div>
             <div style={{ marginTop: "20px", padding: "10px", borderRadius: "7px", backgroundColor: "#f8f9fa", borderLeft: "5px solid #3498db"}}>
                 <h3>Thông tin người dùng</h3>
