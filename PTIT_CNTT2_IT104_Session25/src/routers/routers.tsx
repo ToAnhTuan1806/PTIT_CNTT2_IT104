@@ -13,6 +13,7 @@ import ListUser from "../pages/Bai8/ListUser";
 import UserDetail from "../pages/Bai8/UserDetail";
 import Register from "../pages/Bai9/Register";
 import Login from "../pages/Bai9/Login";
+import CustomLink from "../pages/Bai7/CustomLink";
 
 export const routers = createBrowserRouter([
   {
@@ -31,7 +32,7 @@ export const routers = createBrowserRouter([
       { path: "bai6/product", element: <Product /> },
       { path: "bai6/detail", element: <Detail /> },
 
-      { path: "bai7/home-page", element: <HomePage /> },
+      { path: "*", element: <CustomLink /> },
 
       {path: "users", element: <ListUser/>},
       {path: "users/:id", element: <UserDetail/>},

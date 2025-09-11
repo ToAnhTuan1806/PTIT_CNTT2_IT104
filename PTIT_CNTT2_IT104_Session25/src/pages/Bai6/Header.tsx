@@ -15,13 +15,13 @@ export default function Header() {
 
   return (
     <nav style={{  display: "flex", gap: "15px",  }}>
-      <NavLink to="/bai6/home"  style={({ isActive }) => (isActive ? activeStyle : normalStyle)}>
+      <NavLink to="/home"  style={({ isActive }) => (isActive ? activeStyle : normalStyle)}>
         Home
       </NavLink>
-      <NavLink to="/bai6/product" style={({ isActive }) => (isActive ? activeStyle : normalStyle)}>
+      <NavLink to="/product" style={({ isActive }) => (isActive ? activeStyle : normalStyle)}>
         Product
       </NavLink>
-      <NavLink to="/bai6/detail" style={({ isActive }) => (isActive ? activeStyle : normalStyle)}>
+      <NavLink to="/detail" style={({ isActive }) => (isActive ? activeStyle : normalStyle)}>
         Detail
       </NavLink>
     </nav>
