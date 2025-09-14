@@ -13,6 +13,8 @@ export default function App() {
     <hr />  
       <Link to="/productlist">Product List</Link>
     <hr />  
+      <Link to="/blog">My Blog</Link>
+    <hr />  
 
       <Outlet/>
     </>

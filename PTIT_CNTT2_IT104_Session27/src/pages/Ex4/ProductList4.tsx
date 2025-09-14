@@ -36,34 +36,14 @@ export default function ProductList4() {
       </h1>
 
       <div style={{ marginBottom: 20 }}>
-        <input
-          type="text"
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-          placeholder="Nhập từ khóa tìm kiếm..."
-          style={{
-            padding: "8px 12px",
-            borderRadius: 6,
-            border: "1px solid #ccc",
-            marginRight: 8,
-          }}
-        />
-        <button
-          onClick={handleSearch}
-          style={{
-            padding: "8px 14px",
-            borderRadius: 6,
-            border: "none",
-            background: "#1976d2",
-            color: "#fff",
-            cursor: "pointer",
-          }}
-        >
+        <input type="text" value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="Nhập từ khóa tìm kiếm..." 
+        style={{ padding: "8px 12px", borderRadius: 6, border: "1px solid #ccc", marginRight: 8}}/>
+        <button onClick={handleSearch}
+          style={{ padding: "8px 14px", borderRadius: 6, border: "none", background: "#1976d2", color: "#fff"}}>
           Search
         </button>
       </div>
 
-      {/* Danh sách sản phẩm tĩnh (chưa lọc) */}
       <div
         style={{
           display: "flex",
