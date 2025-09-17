@@ -1,0 +1,29 @@
+{
+  "todos": [
+    {
+      "id": "3",
+      "title": "Nấu cơm",
+      "completed": false
+    },
+    {
+      "id": "4",
+      "title": "Học bài",
+      "completed": true
+    },
+    {
+      "id": "5",
+      "title": "Tưới cây",
+      "completed": true
+    },
+    {
+      "id": "0618",
+      "title": "Ngủ",
+      "completed": false
+    },
+    {
+      "id": "c35d",
+      "title": "Đi học",
+      "completed": false
+    }
+  ]
+}

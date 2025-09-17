@@ -5,7 +5,7 @@ export default function GetAllProduct() {
     id: string;
     product_name: string;
     image: string;
-    pricr: number;
+    price: number;
     quantity: number;
     created_at: string;
   };

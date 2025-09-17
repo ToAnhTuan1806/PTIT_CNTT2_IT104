@@ -1,5 +1,5 @@
 import React from "react";
-import GetAllProduct from "./components/getAllProduct";
+import GetAllProduct from "./components/GetAllProduct";
 
 export default function App() {
   return (
