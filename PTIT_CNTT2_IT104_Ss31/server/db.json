@@ -1,0 +1,20 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "title": "State trong ReactJS",
+      "image": "https://th.bing.com/th/id/OIP.N_6DIrFp3b3qv3WTDohqxgHaHa?w=160&h=180&c=7&r=0&o=7&dpr=1.5&pid=1.7&rm=3t",
+      "date": "04/03/2024",
+      "status": false,
+      "content": "Nội dung bài viết về State trong ReactJS..."
+    },
+    {
+      "id": "2",
+      "title": "Tổng quan về ReactJS",
+      "image": "https://th.bing.com/th/id/OIP.N_6DIrFp3b3qv3WTDohqxgHaHa?w=160&h=180&c=7&r=0&o=7&dpr=1.5&pid=1.7&rm=3t",
+      "date": "03/03/2024",
+      "status": true,
+      "content": "Nội dung bài viết tổng quan về ReactJS..."
+    }
+  ]
+}
