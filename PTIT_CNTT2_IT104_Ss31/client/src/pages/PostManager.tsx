@@ -47,7 +47,7 @@ export default function PostManager() {
   async function getAllPost() {
     try {
       const res = await axios.get(API_BASE_URL);
-      setPosts(res.data as Post[]);
+      setPosts(res.data);
     } catch (e) {
       console.log(e);
     }
