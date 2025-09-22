@@ -1,4 +1,3 @@
-// src/components/RandomNumber.tsx
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../store/reducers";
 import { addRandom } from "../store/reducers/randomReducer";
