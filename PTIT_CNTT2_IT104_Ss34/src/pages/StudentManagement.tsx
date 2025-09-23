@@ -1,4 +1,11 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  ADD_STUDENT,
+  UPDATE_STUDENT,
+  DELETE_STUDENT,
+  SET_KEYWORD,
+} from "../stores/reducer/studentReducer";
 import StudentForm from "../components/StudentForm";
 import StudentList from "../components/StudentList";
 import Toolbar from "../components/Toolbar";
@@ -11,115 +18,60 @@ import {
   Button,
   Typography,
 } from "@mui/material";
+import type { RootState } from "../stores/reducer";
 
 const StudentManagement: React.FC = () => {
-  const [students, setStudents] = React.useState<Student[]>([
-    {
-      id: 1001,
-      fullName: "Nguyễn Văn A",
-      age: 20,
-      gender: true,
-      dateOfBirth: "2005-01-01",
-      placeOfBirth: "Hà Nội",
-      address: "Hoàn Kiếm, Hà Nội",
-    },
-    {
-      id: 1002,
-      fullName: "Trần Thị B",
-      age: 21,
-      gender: false,
-      dateOfBirth: "2004-05-15",
-      placeOfBirth: "Đà Nẵng",
-      address: "Hải Châu, Đà Nẵng",
-    },
-    {
-      id: 1003,
-      fullName: "Phạm Văn C",
-      age: 19,
-      gender: true,
-      dateOfBirth: "2006-09-20",
-      placeOfBirth: "TP.HCM",
-      address: "Quận 1, TP.HCM",
-    },
-  ]);
+  const dispatch = useDispatch();
+  const students = useSelector((state: RootState) => state.students.list);
+  const keyword = useSelector((state: RootState) => state.students.keyword);
 
-  const [keyword, setKeyword] = React.useState<string>("");
-  const [editingStudent, setEditingStudent] = React.useState<Student | null>(null);
-
-  const [confirmOpen, setConfirmOpen] = React.useState<boolean>(false);
-  const [pendingDeleteId, setPendingDeleteId] = React.useState<number | null>(null);
-
-  const handleSearch = (kw: string): void => {
-    setKeyword(() => {
-      return kw.trim();
-    });
-  };
-
-  const displayed: Student[] = React.useMemo(() => {
-    if (!keyword) {
-      return students;
-    } else {
-      const lower = keyword.toLowerCase();
-      return students.filter((s) => {
-        return s.fullName.toLowerCase().includes(lower);
-      });
-    }
+  const displayed = React.useMemo(() => {
+    if (!keyword) return students;
+    const lower = keyword.toLowerCase();
+    return students.filter((s) =>
+      s.fullName.toLowerCase().includes(lower)
+    );
   }, [students, keyword]);
 
-  const handleSubmitStudent = (student: Student): void => {
+  const [editingStudent, setEditingStudent] = React.useState<Student | null>(
+    null
+  );
+  const [confirmOpen, setConfirmOpen] = React.useState(false);
+  const [pendingDeleteId, setPendingDeleteId] = React.useState<number | null>(
+    null
+  );
+
+  const handleSearch = (kw: string) => {
+    dispatch({ type: SET_KEYWORD, payload: kw });
+  };
+
+  const handleSubmitStudent = (student: Student) => {
     if (editingStudent) {
-      setStudents((prev) => {
-        return prev.map((s) => {
-          if (s.id === editingStudent.id) {
-            return { ...student };
-          } else {
-            return s;
-          }
-        });
-      });
+      dispatch({ type: UPDATE_STUDENT, payload: student });
       setEditingStudent(null);
     } else {
-      setStudents((prev) => {
-        return [...prev, student];
-      });
+      dispatch({ type: ADD_STUDENT, payload: student });
     }
   };
 
-  const handleRequestEdit = (student: Student): void => {
+  const handleRequestEdit = (student: Student) => {
     setEditingStudent(student);
-    const el = document.getElementById("student-form");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
   };
 
-  const handleCancelEdit = (): void => {
-    setEditingStudent(null);
-  };
-
-  const handleRequestDelete = (id: number): void => {
+  const handleRequestDelete = (id: number) => {
     setPendingDeleteId(id);
     setConfirmOpen(true);
   };
 
-  const handleCancelDelete = (): void => {
-    setConfirmOpen(false);
-    setPendingDeleteId(null);
-  };
-
-  const handleConfirmDelete = (): void => {
+  const handleConfirmDelete = () => {
     if (pendingDeleteId !== null) {
-      setStudents((prev) => {
-        return prev.filter((s) => {
-          return s.id !== pendingDeleteId;
-        });
-      });
+      dispatch({ type: DELETE_STUDENT, payload: pendingDeleteId });
+      if (editingStudent && editingStudent.id === pendingDeleteId) {
+        setEditingStudent(null);
+      }
     }
     setConfirmOpen(false);
     setPendingDeleteId(null);
-    if (editingStudent && editingStudent.id === pendingDeleteId) {
-      setEditingStudent(null);
-    }
   };
 
   return (
@@ -132,25 +84,24 @@ const StudentManagement: React.FC = () => {
           onRequestEdit={handleRequestEdit}
         />
       </div>
-
       <StudentForm
         onSubmit={handleSubmitStudent}
         existingStudents={students}
         editingStudent={editingStudent}
-        onCancelEdit={handleCancelEdit}
+        onCancelEdit={() => setEditingStudent(null)}
       />
 
-      {/* Modal xác nhận xóa */}
-      <Dialog open={confirmOpen} onClose={handleCancelDelete}>
+      <Dialog open={confirmOpen} onClose={() => setConfirmOpen(false)}>
         <DialogTitle>Xác nhận xóa</DialogTitle>
         <DialogContent>
-          <Typography>Bạn có chắc chắn muốn xóa không?</Typography>
+          <Typography>
+            Bạn có chắc chắn muốn xóa{" "}
+            <b>{students.find((s) => s.id === pendingDeleteId)?.fullName}</b> không?
+          </Typography>
         </DialogContent>
         <DialogActions>
-          <Button variant="outlined" onClick={handleCancelDelete}>
-            Hủy
-          </Button>
-          <Button variant="contained" color="error" onClick={handleConfirmDelete}>
+          <Button onClick={() => setConfirmOpen(false)}>Hủy</Button>
+          <Button color="error" onClick={handleConfirmDelete}>
             Xóa
           </Button>
         </DialogActions>
