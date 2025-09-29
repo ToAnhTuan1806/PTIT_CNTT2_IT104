@@ -18,7 +18,7 @@ interface Props {
     title: string;
     author: string;
     year: number;
-    category: number;
+    category: string;
   }) => void;
   existingTitles?: string[];
 }
@@ -35,7 +35,7 @@ export default function BookForm({
       title: initial?.title ?? "",
       author: initial?.author ?? "",
       year: initial?.year ?? 0,
-      category: initial?.category ?? 0, 
+      category: initial?.category ?? "",
     }),
     [open, initial?.id]
   );
@@ -43,7 +43,7 @@ export default function BookForm({
   const [title, setTitle] = useState(seed.title);
   const [author, setAuthor] = useState(seed.author);
   const [year, setYear] = useState<number | "">(seed.year || "");
-  const [category, setCategory] = useState<number | "">(seed.category || "");
+  const [category, setCategory] = useState<string>(seed.category);
 
   const [errors, setErrors] = useState({
     title: "",
@@ -56,7 +56,7 @@ export default function BookForm({
     setTitle(seed.title);
     setAuthor(seed.author);
     setYear(seed.year || "");
-    setCategory(seed.category || "");
+    setCategory(seed.category);
     setErrors({ title: "", author: "", year: "", category: "" });
   }, [seed]);
 
@@ -89,8 +89,7 @@ export default function BookForm({
       ok = false;
     }
 
-    const c = category === "" ? NaN : Number(category);
-    if (!Number.isFinite(c) || c <= 0) {
+    if (!category.trim()) {
       e.category = "Category không được để trống";
       ok = false;
     }
@@ -107,7 +106,7 @@ export default function BookForm({
       title: title.trim(),
       author: author.trim(),
       year: Number(year),
-      category: Number(category),
+      category: category.trim(), 
     });
   };
 
@@ -145,11 +144,8 @@ export default function BookForm({
           />
           <TextField
             label="Category"
-            type="number"
             value={category}
-            onChange={(e) =>
-              setCategory(e.target.value === "" ? "" : Number(e.target.value))
-            }
+            onChange={(e) => setCategory(e.target.value)}
             error={!!errors.category}
             helperText={errors.category}
             fullWidth

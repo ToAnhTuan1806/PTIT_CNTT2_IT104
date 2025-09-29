@@ -28,6 +28,11 @@ export default function App() {
 
   const [loading, setLoading] = useState(false);
 
+  const onEdit = (b: Book) => {
+    setEditing(b);
+    setOpenForm(true);
+  };
+
   useEffect(() => {
     (async () => {
       setLoading(true);
@@ -39,7 +44,9 @@ export default function App() {
 
   const categories = useMemo(
     () =>
-      Array.from(new Set(books.map((b) => b.category))).sort((a, b) => a - b),
+      Array.from(new Set(books.map((b) => b.category))).sort((a, b) =>
+        a.localeCompare(b)
+      ),
     [books]
   );
 
@@ -48,7 +55,7 @@ export default function App() {
     title: string;
     author: string;
     year: number;
-    category: number;
+    category: string;
   }) => {
     setLoading(true);
     if (data.id != null) {
@@ -80,9 +87,12 @@ export default function App() {
   };
 
   const handleDelete = async (id: number) => {
+    const ok = window.confirm("Bạn có chắc chắn muốn xoá sách này không?");
+    if (!ok) return;
+
     setLoading(true);
-    const ok = await apiDelete(id);
-    if (ok) dispatch(remove(id));
+    const success = await apiDelete(id);
+    if (success) dispatch(remove(id));
     setLoading(false);
   };
 
@@ -96,8 +106,7 @@ export default function App() {
           b.author.toLowerCase().includes(q)
       );
     }
-    if (category !== "all")
-      out = out.filter((b) => String(b.category) === category);
+    if (category !== "all") out = out.filter((b) => b.category === category);
 
     out.sort((a, b) => {
       if (sortBy === "title") {
@@ -150,10 +159,7 @@ export default function App() {
       <div className="mt-6">
         <BookList
           books={filteredSorted}
-          onEdit={(b) => {
-            setEditing(b);
-            setOpenForm(true);
-          }}
+          onEdit={onEdit}
           onDelete={handleDelete}
         />
       </div>
@@ -163,7 +169,9 @@ export default function App() {
         initial={editing}
         onClose={() => setOpenForm(false)}
         onSubmit={handleSubmit}
-        existingTitles={books.map((b) => b.title)}
+        existingTitles={books
+          .filter((b) => b.id !== (editing?.id ?? -1))
+          .map((b) => b.title)}
       />
 
       <Backdrop

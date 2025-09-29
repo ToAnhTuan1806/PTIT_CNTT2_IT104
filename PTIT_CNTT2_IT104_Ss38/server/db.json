@@ -1,25 +1,39 @@
 {
   "books": [
     {
-      "id": 1,
-      "title": "The Great Gatsby",
-      "author": "F. Scott Fitzgerald",
-      "year": 1925,
-      "category": 1
+      "id": "1",
+      "title": "Dế Mèn Phiêu Lưu Ký",
+      "author": "Tô Hoài",
+      "year": 1941,
+      "category": "Thiếu nhi"
     },
     {
-      "id": 2,
-      "title": "A Brief History of Time",
-      "author": "Stephen Hawking",
+      "id": "2",
+      "title": "Tuổi thơ dữ dội",
+      "author": "Phùng Quán",
       "year": 1988,
-      "category": 2
+      "category": "Chiến tranh"
     },
     {
-      "id": 3,
-      "title": "Sapiens",
-      "author": "Yuval Noah Harari",
-      "year": 2011,
-      "category": 3
+      "id": "3",
+      "title": "Nỗi buồn chiến tranh",
+      "author": "Bảo Ninh",
+      "year": 1990,
+      "category": "Chiến tranh"
+    },
+    {
+      "id": "4",
+      "title": "Tắt đèn",
+      "author": "Ngô Tất Tố",
+      "year": 1939,
+      "category": "Hiện thực"
+    },
+    {
+      "id": "5",
+      "title": "Số đỏ",
+      "author": "Vũ Trọng Phụng",
+      "year": 1936,
+      "category": "Châm biếm"
     }
   ]
 }

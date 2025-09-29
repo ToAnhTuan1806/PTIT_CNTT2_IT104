@@ -1,6 +1,6 @@
 import type { Book } from "../components/types";
 
-const BASE = "http://localhost:8080";
+const BASE = "http://localhost:3000";
 
 async function safeJson<T>(res: Response): Promise<T | null> {
   try {

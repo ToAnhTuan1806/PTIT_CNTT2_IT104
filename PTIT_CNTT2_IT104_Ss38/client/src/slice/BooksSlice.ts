@@ -4,23 +4,22 @@ import type { Book } from "../components/types";
 const initialState: Book[] = [];
 
 const booksSlice = createSlice({
-  name: 'books',
+  name: "books",
   initialState,
   reducers: {
-    // Ghi đè toàn bộ danh sách
     setAll(_state, action: PayloadAction<Book[]>) {
       return action.payload;
     },
-    // Thêm 1 book mới
+
     add(state, action: PayloadAction<Book>) {
       state.unshift(action.payload);
     },
-    // Cập nhật 1 book theo id
+
     update(state, action: PayloadAction<Book>) {
       const i = state.findIndex((b) => b.id === action.payload.id);
       if (i >= 0) state[i] = action.payload;
     },
-    // Xoá book theo id
+
     remove(state, action: PayloadAction<number>) {
       const i = state.findIndex((b) => b.id === action.payload);
       if (i >= 0) state.splice(i, 1);
