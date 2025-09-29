@@ -6,7 +6,7 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import type { Book } from "./types";
 
 interface Props {
@@ -23,23 +23,27 @@ interface Props {
   existingTitles?: string[];
 }
 
-export default function BookForm(props: Props) {
-  const { open, initial, onClose, onSubmit, existingTitles = [] } = props;
-
+export default function BookForm({
+  open,
+  initial,
+  onClose,
+  onSubmit,
+  existingTitles = [],
+}: Props) {
   const seed = useMemo(
     () => ({
       title: initial?.title ?? "",
       author: initial?.author ?? "",
-      year: initial?.year ?? new Date().getFullYear(),
-      category: initial?.category ?? 1,
+      year: initial?.year ?? 0,
+      category: initial?.category ?? 0, 
     }),
     [open, initial?.id]
   );
 
   const [title, setTitle] = useState(seed.title);
   const [author, setAuthor] = useState(seed.author);
-  const [year, setYear] = useState<number>(seed.year);
-  const [category, setCategory] = useState<number>(seed.category);
+  const [year, setYear] = useState<number | "">(seed.year || "");
+  const [category, setCategory] = useState<number | "">(seed.category || "");
 
   const [errors, setErrors] = useState({
     title: "",
@@ -51,8 +55,8 @@ export default function BookForm(props: Props) {
   useEffect(() => {
     setTitle(seed.title);
     setAuthor(seed.author);
-    setYear(seed.year);
-    setCategory(seed.category);
+    setYear(seed.year || "");
+    setCategory(seed.category || "");
     setErrors({ title: "", author: "", year: "", category: "" });
   }, [seed]);
 
@@ -78,11 +82,15 @@ export default function BookForm(props: Props) {
       e.author = "Author không được để trống";
       ok = false;
     }
-    if (!year || year <= 0) {
+
+    const y = year === "" ? NaN : Number(year);
+    if (!Number.isFinite(y) || y <= 0) {
       e.year = "Year không hợp lệ";
       ok = false;
     }
-    if (!category || category <= 0) {
+
+    const c = category === "" ? NaN : Number(category);
+    if (!Number.isFinite(c) || c <= 0) {
       e.category = "Category không được để trống";
       ok = false;
     }
@@ -128,7 +136,9 @@ export default function BookForm(props: Props) {
             label="Year"
             type="number"
             value={year}
-            onChange={(e) => setYear(Number(e.target.value))}
+            onChange={(e) =>
+              setYear(e.target.value === "" ? "" : Number(e.target.value))
+            }
             error={!!errors.year}
             helperText={errors.year}
             fullWidth
@@ -137,7 +147,9 @@ export default function BookForm(props: Props) {
             label="Category"
             type="number"
             value={category}
-            onChange={(e) => setCategory(Number(e.target.value))}
+            onChange={(e) =>
+              setCategory(e.target.value === "" ? "" : Number(e.target.value))
+            }
             error={!!errors.category}
             helperText={errors.category}
             fullWidth
